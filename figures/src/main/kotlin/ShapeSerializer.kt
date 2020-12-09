@@ -7,7 +7,7 @@ import java.io.File
 
 object ShapeSerializer {
     private val module = SerializersModule {
-        polymorphic(Shape::class) {
+        polymorphic(GeometricalShape::class) {
             subclass(Rectangle::class)
             subclass(Circle::class)
             subclass(Square::class)
@@ -19,17 +19,17 @@ object ShapeSerializer {
     private val format = Cbor { serializersModule = module }
 
     @ExperimentalSerializationApi
-    fun encodeToFile(nameOfFile: String, collection: List<Shape>) {
+    fun encodeToFile(nameOfFile: String, collection: List<GeometricalShape>) {
         File(nameOfFile).writer().use {
             it.write(format.encodeToHexString(collection))
         }
     }
 
     @ExperimentalSerializationApi
-    fun decodeToArrayList(nameOfFile: String) : ArrayList<Shape>?
+    fun decodeToArrayList(nameOfFile: String) : ArrayList<GeometricalShape>?
     {
         File(nameOfFile).reader().use {
-            return format.decodeFromHexString(it.readText()) as ArrayList<Shape>
+            return format.decodeFromHexString(it.readText()) as ArrayList<GeometricalShape>
         }
     }
 }

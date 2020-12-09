@@ -3,7 +3,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("rectangle")
-class Rectangle(val length: Double, val width: Double) : Shape {
+class Rectangle(val length: Double, val width: Double) : GeometricalShape {
     init {
         if (length <= 0 || width <= 0)
             throw IllegalArgumentException("Length and width must be positive")

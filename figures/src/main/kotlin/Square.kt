@@ -3,7 +3,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("square")
-class Square(val a: Double) : Shape {
+class Square(val a: Double) : GeometricalShape {
     init {
         if (a <= 0)
             throw IllegalArgumentException("Side must be positive")

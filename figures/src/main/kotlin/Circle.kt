@@ -5,7 +5,7 @@ import kotlin.math.pow
 
 @Serializable
 @SerialName("circle")
-class Circle(val radius: Double) : Shape {
+class Circle(val radius: Double) : GeometricalShape {
     init {
         if (radius <= 0)
             throw IllegalArgumentException("Radius must be positive")
