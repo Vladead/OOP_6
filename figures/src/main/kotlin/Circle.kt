@@ -5,7 +5,7 @@ import kotlin.math.pow
 
 @Serializable
 @SerialName("circle")
-class Circle(val radius: Double) : GeometricalShape {
+data class Circle(val radius: Double) : GeometricalShape {
     init {
         if (radius <= 0)
             throw IllegalArgumentException("Radius must be positive")
@@ -17,5 +17,9 @@ class Circle(val radius: Double) : GeometricalShape {
 
     override fun calcPerimeter(): Double {
         return 2 * PI * radius
+    }
+
+    override fun toString(): String {
+        return "Circle $radius"
     }
 }
