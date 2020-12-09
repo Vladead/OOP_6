@@ -13,17 +13,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.IntSize
-import org.jetbrains.skija.paragraph.TextBox
+import androidx.compose.ui.window.Dialog
 
 fun main() = Window(title = "Well, figures") {
     val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
     MaterialTheme {
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            val summonTriangleDialog = remember { mutableStateOf(false) }
             Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(5.dp, Alignment.Top)) {
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 25.dp),
@@ -32,8 +30,13 @@ fun main() = Window(title = "Well, figures") {
                 }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
-                    onClick = {}) {
+                    onClick = {summonTriangleDialog.value = true}) {
                     Text("Добавить треугольник")
+                }
+                if (summonTriangleDialog.value) {
+                    var retVal: Triangle? = null
+                    TriangleDialog(onDismissFun = {summonTriangleDialog.value = false}, onCreated = {returned -> retVal = returned})
+                    println(retVal)
                 }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
@@ -93,3 +96,4 @@ fun ListElement(string: String) =
             Icon(Icons.Sharp.KeyboardArrowDown, Modifier.clickable { })
         }
     }
+
