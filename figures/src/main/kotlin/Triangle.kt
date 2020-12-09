@@ -4,7 +4,7 @@ import kotlin.math.sqrt
 
 @Serializable
 @SerialName("triangle")
-class Triangle(val a: Double, val b: Double, val c: Double) : GeometricalShape {
+data class Triangle(val a: Double, val b: Double, val c: Double) : GeometricalShape {
     init {
         if (a <= 0 || b <= 0 || c <= 0)
             throw  IllegalArgumentException("Sides must be positive")
@@ -19,5 +19,9 @@ class Triangle(val a: Double, val b: Double, val c: Double) : GeometricalShape {
 
     override fun calcPerimeter(): Double {
         return a + b + c
+    }
+
+    override fun toString(): String {
+        return "Triangle $a, $b, $c"
     }
 }

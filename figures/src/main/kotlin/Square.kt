@@ -3,7 +3,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("square")
-class Square(val a: Double) : GeometricalShape {
+data class Square(val a: Double) : GeometricalShape {
     init {
         if (a <= 0)
             throw IllegalArgumentException("Side must be positive")
@@ -15,5 +15,9 @@ class Square(val a: Double) : GeometricalShape {
 
     override fun calcPerimeter(): Double {
         return 4 * a
+    }
+
+    override fun toString(): String {
+        return "Square $a"
     }
 }
