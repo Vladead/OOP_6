@@ -1,20 +1,17 @@
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import java.lang.Exception
 
 @Composable
-fun TriangleDialog(onDismissFun: () -> Unit, onCreated: (Triangle) -> Unit) {
+fun TriangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>) -> Unit) {
     val a = mutableStateOf(0.0)
     val b = mutableStateOf(0.0)
     val c = mutableStateOf(0.0)
@@ -52,7 +49,7 @@ fun TriangleDialog(onDismissFun: () -> Unit, onCreated: (Triangle) -> Unit) {
             Button(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                     onClick = {
                         try {
-                            onCreated(Triangle(a.value, b.value, c.value))
+                            onCreated(mutableStateOf(Triangle(a.value, b.value, c.value)))
                         } catch (e: Exception) {
                             errorState.value = true
                         }

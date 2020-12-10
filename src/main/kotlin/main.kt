@@ -9,12 +9,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.KeyboardArrowDown
 import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 
 fun main() = Window(title = "Well, figures") {
     val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
@@ -29,13 +31,14 @@ fun main() = Window(title = "Well, figures") {
                 }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
-                    onClick = {summonTriangleDialog.value = true}) {
+                    onClick = { summonTriangleDialog.value = true }) {
                     Text("Добавить треугольник")
                 }
                 if (summonTriangleDialog.value) {
-                    var retVal: Triangle? = null
-                    TriangleDialog(onDismissFun = {summonTriangleDialog.value = false}, onCreated = {returned -> retVal = returned})
-                    println(retVal)
+                    var retVal: MutableState<Triangle>
+                    TriangleDialog(
+                        onDismissFun = { summonTriangleDialog.value = false; println("That's how we do") },
+                        onCreated = { returned -> retVal = returned; summonTriangleDialog.value = false; list.add(retVal.value)})
                 }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
@@ -68,11 +71,8 @@ fun main() = Window(title = "Well, figures") {
                     scrollState = stateVertical
                 ) {
                     Column {
-                        for (item in 0..30) {
-                            ListElement("Item in ScrollableColumn #$item")
-                            if (item < 30) {
-                                Spacer(modifier = Modifier.height(5.dp))
-                            }
+                        for (item in list) {
+                            ListElement("$item")
                         }
                     }
                 }
@@ -90,7 +90,7 @@ fun main() = Window(title = "Well, figures") {
 fun ListElement(string: String) =
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
         Text(text = string, color = Color.Blue, textAlign = TextAlign.Start)
-        Row(modifier = Modifier.padding(end = 10.dp) ,horizontalArrangement = Arrangement.End) {
+        Row(modifier = Modifier.padding(end = 10.dp), horizontalArrangement = Arrangement.End) {
             Icon(Icons.Sharp.KeyboardArrowUp, Modifier.clickable { })
             Icon(Icons.Sharp.KeyboardArrowDown, Modifier.clickable { })
         }
