@@ -20,11 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 fun main() = Window(title = "Well, figures") {
-    val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
     MaterialTheme(shapes = Shapes(RoundedCornerShape(0.dp), RoundedCornerShape(0.dp), RoundedCornerShape(0.dp)),
             colors = MaterialTheme.colors.copy(primary = Color(80, 50, 50),
                     onPrimary = Color.Black)
     ) {
+        val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
+
         Box(Modifier.background(Color(80, 80, 80))) {
             Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
@@ -37,7 +38,11 @@ fun main() = Window(title = "Well, figures") {
                         var retVal: MutableState<Triangle>
                         triangleDialog(
                                 onDismissFun = { isTriangleDialogSummoned.value = false },
-                                onCreated = { returned -> retVal = returned; isTriangleDialogSummoned.value = false; list.add(retVal.value) })
+                                onCreated = { returned ->
+                                    retVal = returned
+                                    isTriangleDialogSummoned.value = false
+                                    list.add(retVal.value)
+                                })
                     }
 
                     val isRectangleDialogSummoned = remember { mutableStateOf(false) }
@@ -49,7 +54,11 @@ fun main() = Window(title = "Well, figures") {
                         var retVal: MutableState<Rectangle>
                         rectangleDialog(
                                 onDismissFun = { isRectangleDialogSummoned.value = false },
-                                onCreated = { returned -> retVal = returned; isRectangleDialogSummoned.value = false; list.add(retVal.value) })
+                                onCreated = { returned ->
+                                    retVal = returned
+                                    isRectangleDialogSummoned.value = false
+                                    list.add(retVal.value)
+                                })
                     }
 
                     val isCircleDialogSummoned = remember { mutableStateOf(false) }
@@ -61,7 +70,11 @@ fun main() = Window(title = "Well, figures") {
                         var retVal: MutableState<Circle>
                         circleDialog(
                                 onDismissFun = { isCircleDialogSummoned.value = false },
-                                onCreated = { returned -> retVal = returned; isCircleDialogSummoned.value = false; list.add(retVal.value) })
+                                onCreated = { returned ->
+                                    retVal = returned
+                                    isCircleDialogSummoned.value = false
+                                    list.add(retVal.value)
+                                })
                     }
 
                     val isSquareDialogSummoned = remember { mutableStateOf(false) }
@@ -74,7 +87,11 @@ fun main() = Window(title = "Well, figures") {
                         var retVal: MutableState<Square>
                         squareDialog(
                                 onDismissFun = { isSquareDialogSummoned.value = false },
-                                onCreated = { returned -> retVal = returned; isSquareDialogSummoned.value = false; list.add(retVal.value) })
+                                onCreated = { returned ->
+                                    retVal = returned
+                                    isSquareDialogSummoned.value = false
+                                    list.add(retVal.value)
+                                })
                     }
                 }
                 Box(
@@ -83,16 +100,16 @@ fun main() = Window(title = "Well, figures") {
                                 .padding(10.dp)
                 ) {
                     val stateVertical = rememberScrollState(0f)
-                    val stateHorizontal = rememberScrollState(0f)
+                    val trigger = remember { mutableStateOf(false) }
 
                     ScrollableColumn(
                             modifier = Modifier.fillMaxHeight(),
                             scrollState = stateVertical
                     ) {
                         Column {
-                            for (i in list.indices) {
+                            repeat(list.size) {i ->
                                 ListElement("${list[i]}",
-                                        { list.removeAt(i) },
+                                        { list.removeAt(i); trigger.value = !trigger.value },
                                         {},
                                         {})
                             }
@@ -118,14 +135,14 @@ fun ListElement(string: String,
                 modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
                         .border(BorderStroke(2.dp, Color.Black), RoundedCornerShape(25))
         ) {
-            Icon(Icons.Sharp.Close, Modifier.clickable { })
+            Icon(Icons.Sharp.Close, Modifier.clickable { onDeleteClick() })
             Row(horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = string, textAlign = TextAlign.Start, modifier = Modifier.padding(start = 5.dp))
                 Row(modifier = Modifier.padding(end = 10.dp), horizontalArrangement = Arrangement.End) {
-                    Icon(Icons.Sharp.KeyboardArrowUp, Modifier.clickable { })
-                    Icon(Icons.Sharp.KeyboardArrowDown, Modifier.clickable { })
+                    Icon(Icons.Sharp.KeyboardArrowUp, Modifier.clickable { onUpClick() })
+                    Icon(Icons.Sharp.KeyboardArrowDown, Modifier.clickable { onDownClick() })
                 }
             }
         }

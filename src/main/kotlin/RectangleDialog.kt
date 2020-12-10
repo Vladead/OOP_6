@@ -1,4 +1,5 @@
 import androidx.compose.desktop.AppWindowAmbient
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -33,34 +34,38 @@ fun rectangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Rectangle
                 AppWindowAmbient.current?.setSize(600, 400)
                 isFirst.value = false
             }
-            Column(Modifier.fillMaxSize().padding(top = 5.dp), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
-                if (errorState.value)
-                    Text("Such a rectangle can't exist", modifier = Modifier.padding(5.dp))
-                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                    DataInputRow("length", currentLength.value, onValueChange = { str ->
-                        run {
-                            currentLength.value = str
-                            errorState.value = false
-                            length.value = str.toDoubleOrNull() ?: 0.0
-                        }
-                    })
-                    DataInputRow("width", currentWidth.value, onValueChange = { str ->
-                        run {
-                            currentWidth.value = str
-                            errorState.value = false
-                            width.value = str.toDoubleOrNull() ?: 0.0
-                        }
-                    })
-                }
-                Button(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
-                        onClick = {
-                            try {
-                                onCreated(mutableStateOf(Rectangle(length.value, width.value)))
-                            } catch (e: Exception) {
-                                errorState.value = true
+            Box(Modifier.background(Color(80, 80, 80))) {
+                Column(Modifier.fillMaxSize().padding(top = 5.dp), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (errorState.value)
+                        Text("Such a rectangle can't exist", modifier = Modifier.padding(5.dp))
+                    else
+                        Box(Modifier.preferredHeight(28.dp)) // Precision magic!
+                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        DataInputRow("length", currentLength.value, onValueChange = { str ->
+                            run {
+                                currentLength.value = str
+                                errorState.value = false
+                                length.value = str.toDoubleOrNull() ?: 0.0
                             }
-                        }) {
-                    Text("Create")
+                        })
+                        DataInputRow("width", currentWidth.value, onValueChange = { str ->
+                            run {
+                                currentWidth.value = str
+                                errorState.value = false
+                                width.value = str.toDoubleOrNull() ?: 0.0
+                            }
+                        })
+                    }
+                    Button(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            onClick = {
+                                try {
+                                    onCreated(mutableStateOf(Rectangle(length.value, width.value)))
+                                } catch (e: Exception) {
+                                    errorState.value = true
+                                }
+                            }) {
+                        Text("Create")
+                    }
                 }
             }
         }
