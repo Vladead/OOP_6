@@ -26,34 +26,57 @@ fun main() = Window(title = "Well, figures") {
             onPrimary = Color.Black)
     ) {
         Box(Modifier.background(Color(80, 80, 80))) {
-            Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                val summonTriangleDialog = remember { mutableStateOf(false) }
-                Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                            onClick = { summonTriangleDialog.value = true }) {
-                        Text("Добавить треугольник")
-                    }
-                    if (summonTriangleDialog.value) {
-                        var retVal: MutableState<Triangle>
-                        TriangleDialog(
-                                onDismissFun = { summonTriangleDialog.value = false },
-                                onCreated = { returned -> retVal = returned; summonTriangleDialog.value = false; list.add(retVal.value) })
-                    }
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                            onClick = {}) {
-                        Text("Добавить прямоугольник")
-                    }
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                            onClick = {}) {
-                        Text("Добавить круг")
-                    }
-                    Button(
-                            modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                            onClick = {}) {
-                        Text("Добавить квадрат")
-                    }
+        Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
+                val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                    onClick = { isTriangleDialogSummoned.value = true }) {
+                    Text("Добавить треугольник")
+                }
+                if (isTriangleDialogSummoned.value) {
+                    var retVal: MutableState<Triangle>
+                    triangleDialog(
+                        onDismissFun = { isTriangleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isTriangleDialogSummoned.value = false; list.add(retVal.value)})
                 }
 
+                val isRectangleDialogSummoned = remember { mutableStateOf(false) }
+                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                    onClick = {isRectangleDialogSummoned.value = true}) {
+                    Text("Добавить прямоугольник")
+                }
+                if (isRectangleDialogSummoned.value) {
+                    var retVal: MutableState<Rectangle>
+                    rectangleDialog(
+                        onDismissFun = { isRectangleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isRectangleDialogSummoned.value = false; list.add(retVal.value)})
+                }
+
+                val isCircleDialogSummoned = remember { mutableStateOf(false) }
+                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                    onClick = {isCircleDialogSummoned.value = true}) {
+                    Text("Добавить круг")
+                }
+                if (isCircleDialogSummoned.value) {
+                    var retVal: MutableState<Circle>
+                    circleDialog(
+                        onDismissFun = { isCircleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isCircleDialogSummoned.value = false; list.add(retVal.value)})
+                }
+
+                val isSquareDialogSummoned = remember { mutableStateOf(false) }
+                Button(
+                    modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                    onClick = {isSquareDialogSummoned.value = true}) {
+                    Text("Добавить квадрат")
+                }
+                if (isSquareDialogSummoned.value) {
+                    var retVal: MutableState<Square>
+                    squareDialog(
+                        onDismissFun = { isSquareDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isSquareDialogSummoned.value = false; list.add(retVal.value)})
+                }
+            }
                 Box(
                         modifier = Modifier.fillMaxHeight()
                                 .background(color = Color(120, 120, 120))

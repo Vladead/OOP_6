@@ -18,7 +18,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.MenuBar
 
 @Composable
-fun TriangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>) -> Unit) {
+fun triangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>) -> Unit) {
     val a = mutableStateOf(0.0)
     val b = mutableStateOf(0.0)
     val c = mutableStateOf(0.0)
