@@ -33,7 +33,7 @@ fun triangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>)
                         onPrimary = Color.Black)
         ) {
             if (isFirst.value) {
-                AppWindowAmbient.current?.setTitle("Well, triangle")
+                AppWindowAmbient.current?.setTitle("Try-again-angle")
                 AppWindowAmbient.current?.setSize(600, 400)
                 isFirst.value = false
             }

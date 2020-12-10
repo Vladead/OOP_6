@@ -22,61 +22,61 @@ import androidx.compose.ui.unit.dp
 fun main() = Window(title = "Well, figures") {
     val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
     MaterialTheme(shapes = Shapes(RoundedCornerShape(0.dp), RoundedCornerShape(0.dp), RoundedCornerShape(0.dp)),
-            colors = MaterialTheme.colors.copy(primary = Color(80,50,50),
-            onPrimary = Color.Black)
+            colors = MaterialTheme.colors.copy(primary = Color(80, 50, 50),
+                    onPrimary = Color.Black)
     ) {
         Box(Modifier.background(Color(80, 80, 80))) {
-        Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
-                val isTriangleDialogSummoned = remember { mutableStateOf(false) }
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                    onClick = { isTriangleDialogSummoned.value = true }) {
-                    Text("Добавить треугольник")
-                }
-                if (isTriangleDialogSummoned.value) {
-                    var retVal: MutableState<Triangle>
-                    triangleDialog(
-                        onDismissFun = { isTriangleDialogSummoned.value = false },
-                        onCreated = { returned -> retVal = returned; isTriangleDialogSummoned.value = false; list.add(retVal.value)})
-                }
+            Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
+                    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                            onClick = { isTriangleDialogSummoned.value = true }) {
+                        Text("Добавить треугольник")
+                    }
+                    if (isTriangleDialogSummoned.value) {
+                        var retVal: MutableState<Triangle>
+                        triangleDialog(
+                                onDismissFun = { isTriangleDialogSummoned.value = false },
+                                onCreated = { returned -> retVal = returned; isTriangleDialogSummoned.value = false; list.add(retVal.value) })
+                    }
 
-                val isRectangleDialogSummoned = remember { mutableStateOf(false) }
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                    onClick = {isRectangleDialogSummoned.value = true}) {
-                    Text("Добавить прямоугольник")
-                }
-                if (isRectangleDialogSummoned.value) {
-                    var retVal: MutableState<Rectangle>
-                    rectangleDialog(
-                        onDismissFun = { isRectangleDialogSummoned.value = false },
-                        onCreated = { returned -> retVal = returned; isRectangleDialogSummoned.value = false; list.add(retVal.value)})
-                }
+                    val isRectangleDialogSummoned = remember { mutableStateOf(false) }
+                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                            onClick = { isRectangleDialogSummoned.value = true }) {
+                        Text("Добавить прямоугольник")
+                    }
+                    if (isRectangleDialogSummoned.value) {
+                        var retVal: MutableState<Rectangle>
+                        rectangleDialog(
+                                onDismissFun = { isRectangleDialogSummoned.value = false },
+                                onCreated = { returned -> retVal = returned; isRectangleDialogSummoned.value = false; list.add(retVal.value) })
+                    }
 
-                val isCircleDialogSummoned = remember { mutableStateOf(false) }
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                    onClick = {isCircleDialogSummoned.value = true}) {
-                    Text("Добавить круг")
-                }
-                if (isCircleDialogSummoned.value) {
-                    var retVal: MutableState<Circle>
-                    circleDialog(
-                        onDismissFun = { isCircleDialogSummoned.value = false },
-                        onCreated = { returned -> retVal = returned; isCircleDialogSummoned.value = false; list.add(retVal.value)})
-                }
+                    val isCircleDialogSummoned = remember { mutableStateOf(false) }
+                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                            onClick = { isCircleDialogSummoned.value = true }) {
+                        Text("Добавить круг")
+                    }
+                    if (isCircleDialogSummoned.value) {
+                        var retVal: MutableState<Circle>
+                        circleDialog(
+                                onDismissFun = { isCircleDialogSummoned.value = false },
+                                onCreated = { returned -> retVal = returned; isCircleDialogSummoned.value = false; list.add(retVal.value) })
+                    }
 
-                val isSquareDialogSummoned = remember { mutableStateOf(false) }
-                Button(
-                    modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                    onClick = {isSquareDialogSummoned.value = true}) {
-                    Text("Добавить квадрат")
+                    val isSquareDialogSummoned = remember { mutableStateOf(false) }
+                    Button(
+                            modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
+                            onClick = { isSquareDialogSummoned.value = true }) {
+                        Text("Добавить квадрат")
+                    }
+                    if (isSquareDialogSummoned.value) {
+                        var retVal: MutableState<Square>
+                        squareDialog(
+                                onDismissFun = { isSquareDialogSummoned.value = false },
+                                onCreated = { returned -> retVal = returned; isSquareDialogSummoned.value = false; list.add(retVal.value) })
+                    }
                 }
-                if (isSquareDialogSummoned.value) {
-                    var retVal: MutableState<Square>
-                    squareDialog(
-                        onDismissFun = { isSquareDialogSummoned.value = false },
-                        onCreated = { returned -> retVal = returned; isSquareDialogSummoned.value = false; list.add(retVal.value)})
-                }
-            }
                 Box(
                         modifier = Modifier.fillMaxHeight()
                                 .background(color = Color(120, 120, 120))
@@ -92,7 +92,7 @@ fun main() = Window(title = "Well, figures") {
                         Column {
                             for (i in list.indices) {
                                 ListElement("${list[i]}",
-                                        {list.removeAt(i)},
+                                        { list.removeAt(i) },
                                         {},
                                         {})
                             }
@@ -115,10 +115,10 @@ fun ListElement(string: String,
                 onUpClick: () -> Unit,
                 onDownClick: () -> Unit) =
         Row(horizontalArrangement = Arrangement.Start,
-        modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
-                .border(BorderStroke(2.dp, Color.Black), RoundedCornerShape(25))
+                modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
+                        .border(BorderStroke(2.dp, Color.Black), RoundedCornerShape(25))
         ) {
-            Icon(Icons.Sharp.Close, Modifier.clickable {  })
+            Icon(Icons.Sharp.Close, Modifier.clickable { })
             Row(horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
             ) {
