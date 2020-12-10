@@ -22,39 +22,64 @@ fun main() = Window(title = "Well, figures") {
     val list = arrayListOf(Circle(24.0), Triangle(10.0, 5.0, 6.0), Rectangle(20.0, 10.0), Square(25.0))
     MaterialTheme {
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            val summonTriangleDialog = remember { mutableStateOf(false) }
             Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(5.dp, Alignment.Top)) {
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 25.dp),
                     onClick = {}) {
                     Text("Удалить")
                 }
+
+                val isTriangleDialogSummoned = remember { mutableStateOf(false) }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
-                    onClick = { summonTriangleDialog.value = true }) {
+                    onClick = { isTriangleDialogSummoned.value = true }) {
                     Text("Добавить треугольник")
                 }
-                if (summonTriangleDialog.value) {
+                if (isTriangleDialogSummoned.value) {
                     var retVal: MutableState<Triangle>
-                    TriangleDialog(
-                        onDismissFun = { summonTriangleDialog.value = false; println("That's how we do") },
-                        onCreated = { returned -> retVal = returned; summonTriangleDialog.value = false; list.add(retVal.value)})
+                    triangleDialog(
+                        onDismissFun = { isTriangleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isTriangleDialogSummoned.value = false; list.add(retVal.value)})
                 }
+
+                val isRectangleDialogSummoned = remember { mutableStateOf(false) }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
-                    onClick = {}) {
+                    onClick = {isRectangleDialogSummoned.value = true}) {
                     Text("Добавить прямоугольник")
                 }
+                if (isRectangleDialogSummoned.value) {
+                    var retVal: MutableState<Rectangle>
+                    rectangleDialog(
+                        onDismissFun = { isRectangleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isRectangleDialogSummoned.value = false; list.add(retVal.value)})
+                }
+
+                val isCircleDialogSummoned = remember { mutableStateOf(false) }
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                     .padding(start = 10.dp, end = 10.dp),
-                    onClick = {}) {
+                    onClick = {isCircleDialogSummoned.value = true}) {
                     Text("Добавить круг")
                 }
+                if (isCircleDialogSummoned.value) {
+                    var retVal: MutableState<Circle>
+                    circleDialog(
+                        onDismissFun = { isCircleDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isCircleDialogSummoned.value = false; list.add(retVal.value)})
+                }
+
+                val isSquareDialogSummoned = remember { mutableStateOf(false) }
                 Button(
                     modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp)
                         .padding(start = 10.dp, end = 10.dp),
-                    onClick = {}) {
+                    onClick = {isSquareDialogSummoned.value = true}) {
                     Text("Добавить квадрат")
+                }
+                if (isSquareDialogSummoned.value) {
+                    var retVal: MutableState<Square>
+                    squareDialog(
+                        onDismissFun = { isSquareDialogSummoned.value = false },
+                        onCreated = { returned -> retVal = returned; isSquareDialogSummoned.value = false; list.add(retVal.value)})
                 }
             }
 
