@@ -18,6 +18,6 @@ data class Square(val a: Double) : GeometricalShape {
     }
 
     override fun toString(): String {
-        return "Square $a"
+        return "Square ${a}x${a}"
     }
 }

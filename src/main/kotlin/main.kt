@@ -1,3 +1,4 @@
+import androidx.compose.desktop.AppWindowAmbient
 import androidx.compose.desktop.Window
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.sharp.Close
 import androidx.compose.material.icons.sharp.KeyboardArrowDown
 import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +30,6 @@ fun main() = Window(title = "Well, figures") {
                     Rectangle(20.0, 10.0),
                     Square(25.0))
         }
-
         Box(Modifier.background(Color(80, 80, 80))) {
             Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
@@ -111,11 +112,10 @@ fun main() = Window(title = "Well, figures") {
                         Column {
                             if (list.size > 0) {
                                 repeat(list.size) { i ->
-                                    val trigger = remember { mutableStateOf(false) }
                                     ListElement("${list[i]}",
-                                            { list.removeAt(i); trigger.value = !trigger.value },
-                                            {},
-                                            {})
+                                            onDeleteClick = { list.removeAt(i) },
+                                            onUpClick = { list.trySwap(i, i-1) },
+                                            onDownClick = { list.trySwap(i, i+1) })
                                 }
                             } else
                                 Box(Modifier.fillMaxWidth())
