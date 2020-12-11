@@ -56,7 +56,7 @@ fun rectangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Rectangle
                             }
                         })
                     }
-                    Button(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    Button(modifier = Modifier.preferredWidth(200.dp).padding(top = 5.dp, bottom = 5.dp),
                             onClick = {
                                 try {
                                     onCreated(mutableStateOf(Rectangle(length.value, width.value)))

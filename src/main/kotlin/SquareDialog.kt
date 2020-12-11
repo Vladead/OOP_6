@@ -28,7 +28,7 @@ fun squareDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Square>) -> 
                         onPrimary = Color.Black)
         ) {
             if (isFirst.value) {
-                AppWindowAmbient.current?.setTitle("Square you")
+                AppWindowAmbient.current?.setTitle("To square is human")
                 AppWindowAmbient.current?.setSize(600, 400)
                 isFirst.value = false
             }
@@ -47,7 +47,7 @@ fun squareDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Square>) -> 
                             }
                         })
                     }
-                    Button(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    Button(modifier = Modifier.preferredWidth(200.dp).padding(top = 5.dp, bottom = 5.dp),
                             onClick = {
                                 try {
                                     onCreated(mutableStateOf(Square(a.value)))
