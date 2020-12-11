@@ -3,37 +3,29 @@ import androidx.compose.desktop.Window
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.Close
-import androidx.compose.material.icons.sharp.KeyboardArrowDown
-import androidx.compose.material.icons.sharp.KeyboardArrowUp
-import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 fun main() = Window(title = "Well, figures") {
     MaterialTheme(
-        shapes = Shapes(RoundedCornerShape(0.dp), RoundedCornerShape(0.dp), RoundedCornerShape(0.dp)),
-        colors = MaterialTheme.colors.copy(
-            primary = Color(80, 50, 50),
-            onPrimary = Color.Black
-        )
+            shapes = Shapes(RoundedCornerShape(0.dp), RoundedCornerShape(0.dp), RoundedCornerShape(0.dp)),
+            colors = MaterialTheme.colors.copy(
+                    primary = Color(80, 50, 50),
+                    onPrimary = Color.Black
+            )
     ) {
         val list = remember { mutableStateListOf<GeometricalShape>() }
         AppWindowAmbient.current?.events?.onOpen = {
-            val tempList: ArrayList<GeometricalShape>
+            val tempList: ArrayList<GeometricalShape>?
             try {
-                tempList = ShapeSerializer.decodeToArrayList("encoded.shape") ?: ArrayList()
+                tempList = ShapeSerializer.decodeToArrayList("encoded.shape")
                 if (!tempList.isNullOrEmpty())
                     list.addAll(tempList)
             } catch (exception: Exception) {
@@ -45,90 +37,33 @@ fun main() = Window(title = "Well, figures") {
         }
         Box(Modifier.background(Color(80, 80, 80))) {
             Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Column(Modifier.fillMaxHeight(), Arrangement.spacedBy(0.dp, Alignment.Top)) {
-                    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                        onClick = { isTriangleDialogSummoned.value = true }) {
-                        Text("Добавить треугольник")
-                    }
-                    if (isTriangleDialogSummoned.value) {
-                        var retVal: MutableState<Triangle>
-                        triangleDialog(
-                            onDismissFun = { isTriangleDialogSummoned.value = false },
-                            onCreated = { returned ->
-                                retVal = returned
-                                isTriangleDialogSummoned.value = false
-                                list.add(retVal.value)
-                            })
-                    }
-
-                    val isRectangleDialogSummoned = remember { mutableStateOf(false) }
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                        onClick = { isRectangleDialogSummoned.value = true }) {
-                        Text("Добавить прямоугольник")
-                    }
-                    if (isRectangleDialogSummoned.value) {
-                        var retVal: MutableState<Rectangle>
-                        rectangleDialog(
-                            onDismissFun = { isRectangleDialogSummoned.value = false },
-                            onCreated = { returned ->
-                                retVal = returned
-                                isRectangleDialogSummoned.value = false
-                                list.add(retVal.value)
-                            })
-                    }
-
-                    val isCircleDialogSummoned = remember { mutableStateOf(false) }
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                        onClick = { isCircleDialogSummoned.value = true }) {
-                        Text("Добавить круг")
-                    }
-                    if (isCircleDialogSummoned.value) {
-                        var retVal: MutableState<Circle>
-                        circleDialog(
-                            onDismissFun = { isCircleDialogSummoned.value = false },
-                            onCreated = { returned ->
-                                retVal = returned
-                                isCircleDialogSummoned.value = false
-                                list.add(retVal.value)
-                            })
-                    }
-
-                    val isSquareDialogSummoned = remember { mutableStateOf(false) }
-                    Button(
-                        modifier = Modifier.align(Alignment.CenterHorizontally).width(300.dp),
-                        onClick = { isSquareDialogSummoned.value = true }) {
-                        Text("Добавить квадрат")
-                    }
-                    if (isSquareDialogSummoned.value) {
-                        var retVal: MutableState<Square>
-                        squareDialog(
-                            onDismissFun = { isSquareDialogSummoned.value = false },
-                            onCreated = { returned ->
-                                retVal = returned
-                                isSquareDialogSummoned.value = false
-                                list.add(retVal.value)
-                            })
-                    }
+                Column(Modifier.fillMaxHeight(),
+                        Arrangement.spacedBy(0.dp, Alignment.Top),
+                        Alignment.CenterHorizontally
+                ) {
+                    TriangleCreateButton { list.add(it) }
+                    SquareCreateButton { list.add(it) }
+                    RectangleCreateButton { list.add(it) }
+                    CircleCreateButton { list.add(it) }
                 }
                 Box(
-                    modifier = Modifier.fillMaxHeight()
-                        .background(color = Color(120, 120, 120))
-                        .padding(10.dp)
+                        modifier = Modifier.fillMaxHeight()
+                                .background(color = Color(120, 120, 120))
+                                .padding(10.dp)
                 ) {
                     val stateVertical = rememberScrollState(0f)
 
                     ScrollableColumn(
-                        modifier = Modifier.fillMaxHeight(),
-                        scrollState = stateVertical
+                            modifier = Modifier.fillMaxHeight(),
+                            scrollState = stateVertical
                     ) {
                         Column {
                             if (list.size > 0) {
                                 repeat(list.size) { i ->
-                                    ListElement("${list[i]}",
+                                    ShapeListElement("${list[i]}",
                                             onDeleteClick = { list.removeAt(i) },
-                                            onUpClick = { list.trySwap(i, i-1) },
-                                            onDownClick = { list.trySwap(i, i+1) })
+                                            onUpClick = { list.trySwap(i, i - 1) },
+                                            onDownClick = { list.trySwap(i, i + 1) })
                                 }
                             } else
                                 Box(Modifier.fillMaxWidth())
@@ -136,37 +71,12 @@ fun main() = Window(title = "Well, figures") {
                         }
                     }
                     VerticalScrollbar(
-                        modifier = Modifier.align(Alignment.CenterEnd)
-                            .fillMaxHeight(),
-                        adapter = rememberScrollbarAdapter(stateVertical)
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                                    .fillMaxHeight(),
+                            adapter = rememberScrollbarAdapter(stateVertical)
                     )
                 }
             }
         }
     }
 }
-
-@Composable
-fun ListElement(
-    string: String,
-    onDeleteClick: () -> Unit,
-    onUpClick: () -> Unit,
-    onDownClick: () -> Unit
-) =
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
-            .border(BorderStroke(2.dp, Color.Black), RoundedCornerShape(25))
-    ) {
-        Icon(Icons.Sharp.Close, Modifier.clickable { onDeleteClick() })
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = string, textAlign = TextAlign.Start, modifier = Modifier.padding(start = 5.dp))
-            Row(modifier = Modifier.padding(end = 10.dp), horizontalArrangement = Arrangement.End) {
-                Icon(Icons.Sharp.KeyboardArrowUp, Modifier.clickable { onUpClick() })
-                Icon(Icons.Sharp.KeyboardArrowDown, Modifier.clickable { onDownClick() })
-            }
-        }
-    }

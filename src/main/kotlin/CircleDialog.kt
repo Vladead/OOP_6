@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun circleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Circle>) -> Unit) {
+fun CircleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Circle>) -> Unit) {
     val radius = mutableStateOf(0.0)
     val errorState = mutableStateOf(false)
     val isFirst = mutableStateOf(true)
@@ -60,5 +60,23 @@ fun circleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Circle>) -> 
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun CircleCreateButton(onCreated: (GeometricalShape) -> Unit) {
+    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+    Button(modifier = Modifier.width(300.dp),
+            onClick = { isTriangleDialogSummoned.value = true }) {
+        Text("Добавить окружность")
+    }
+    if (isTriangleDialogSummoned.value) {
+        CircleDialog(
+                onDismissFun = { isTriangleDialogSummoned.value = false },
+                onCreated = { returned ->
+                    isTriangleDialogSummoned.value = false
+                    onCreated(returned.value)
+                })
     }
 }

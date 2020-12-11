@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun squareDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Square>) -> Unit) {
+fun SquareDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Square>) -> Unit) {
     val a = mutableStateOf(0.0)
     val errorState = mutableStateOf(false)
     val isFirst = mutableStateOf(true)
@@ -60,5 +60,22 @@ fun squareDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Square>) -> 
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SquareCreateButton(onCreated: (GeometricalShape) -> Unit) {
+    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+    Button(modifier = Modifier.width(300.dp),
+            onClick = { isTriangleDialogSummoned.value = true }) {
+        Text("Добавить квадрат")
+    }
+    if (isTriangleDialogSummoned.value) {
+        SquareDialog(
+                onDismissFun = { isTriangleDialogSummoned.value = false },
+                onCreated = { returned ->
+                    isTriangleDialogSummoned.value = false
+                    onCreated(returned.value)
+                })
     }
 }

@@ -15,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.MenuBar
 
 @Composable
-fun triangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>) -> Unit) {
+fun TriangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>) -> Unit) {
     val a = mutableStateOf(0.0)
     val b = mutableStateOf(0.0)
     val c = mutableStateOf(0.0)
@@ -81,5 +80,22 @@ fun triangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Triangle>)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TriangleCreateButton(onCreated: (GeometricalShape) -> Unit) {
+    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+    Button(modifier = Modifier.width(300.dp),
+            onClick = { isTriangleDialogSummoned.value = true }) {
+        Text("Добавить треугольник")
+    }
+    if (isTriangleDialogSummoned.value) {
+        TriangleDialog(
+                onDismissFun = { isTriangleDialogSummoned.value = false },
+                onCreated = { returned ->
+                    isTriangleDialogSummoned.value = false
+                    onCreated(returned.value)
+                })
     }
 }

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun rectangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Rectangle>) -> Unit) {
+fun RectangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Rectangle>) -> Unit) {
     val length = mutableStateOf(0.0)
     val width = mutableStateOf(0.0)
     val errorState = mutableStateOf(false)
@@ -69,5 +69,22 @@ fun rectangleDialog(onDismissFun: () -> Unit, onCreated: (MutableState<Rectangle
                 }
             }
         }
+    }
+}
+
+@Composable
+fun RectangleCreateButton(onCreated: (GeometricalShape) -> Unit) {
+    val isTriangleDialogSummoned = remember { mutableStateOf(false) }
+    Button(modifier = Modifier.width(300.dp),
+            onClick = { isTriangleDialogSummoned.value = true }) {
+        Text("Добавить прямоугольник")
+    }
+    if (isTriangleDialogSummoned.value) {
+        RectangleDialog(
+                onDismissFun = { isTriangleDialogSummoned.value = false },
+                onCreated = { returned ->
+                    isTriangleDialogSummoned.value = false
+                    onCreated(returned.value)
+                })
     }
 }
