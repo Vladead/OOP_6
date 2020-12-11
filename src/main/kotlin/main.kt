@@ -13,6 +13,7 @@ import androidx.compose.material.icons.sharp.Close
 import androidx.compose.material.icons.sharp.KeyboardArrowDown
 import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -124,11 +125,10 @@ fun main() = Window(title = "Well, figures") {
                         Column {
                             if (list.size > 0) {
                                 repeat(list.size) { i ->
-                                    val trigger = remember { mutableStateOf(false) }
                                     ListElement("${list[i]}",
-                                        { list.removeAt(i); trigger.value = !trigger.value },
-                                        {},
-                                        {})
+                                            onDeleteClick = { list.removeAt(i) },
+                                            onUpClick = { list.trySwap(i, i-1) },
+                                            onDownClick = { list.trySwap(i, i+1) })
                                 }
                             } else
                                 Box(Modifier.fillMaxWidth())
